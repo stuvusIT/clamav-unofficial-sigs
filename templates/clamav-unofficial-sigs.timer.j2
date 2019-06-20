@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+[Unit]
+Description=Clamav Unofficial Sigs Update timer
+Documentation=man:clamav-unofficial-sigs(8)
+
+[Timer]
+OnCalendar={{ clamav_unofficial_sigs_frequency }}
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+
+{% for key,value in clamav_unofficial_sigs_config.items() %}
+{{ key }}="{{ value }}"
+{% endfor %}
+
+{% if clamav_unofficial_sigs_additional_dbs | length > 0 %}
+declare -a additional_dbs=(
+{% for db in clamav_unofficial_sigs_additional_dbs %}
+   {{ db }}
+{% endfor %}
+)
+{% endif %}

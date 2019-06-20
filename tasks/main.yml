@@ -1,0 +1,99 @@
+---
+- name: Install required packages
+  apt:
+    name:
+      - gpg
+      - curl
+      - wget
+      - rsync
+      - socat
+  when: ansible_pkg_mgr == "apt"
+
+- name: Clone clamav-unofficial-sigs locally
+  git:
+    repo: https://github.com/extremeshok/clamav-unofficial-sigs.git
+    dest: "{{ clamav_unofficial_sigs_clone_dir }}"
+    force: True
+  changed_when: False
+  become: no
+  run_once: True
+  delegate_to: localhost
+
+- name: Copy clamav-unofficial-sigs.sh to /usr/local/sbin
+  copy:
+    src: "{{ clamav_unofficial_sigs_clone_dir }}/clamav-unofficial-sigs.sh"
+    dest: /usr/local/sbin/clamav-unofficial-sigs.sh
+    force: True
+    mode: 0755
+    owner: root
+    group: root
+  register: copyscript
+
+- name: Create configuration and log directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - /etc/clamav-unofficial-sigs
+    - /var/log/clamav-unofficial-sigs
+
+- name: Copy master and OS configs
+  copy:
+    src: "{{ clamav_unofficial_sigs_clone_dir }}/config/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    force: True
+    mode: 0644
+    owner: root
+    group: root
+  loop:
+    - src: master.conf
+      dest: /etc/clamav-unofficial-sigs/master.conf
+    - src: "os.{{ clamav_unofficial_sigs_os }}.conf"
+      dest: /etc/clamav-unofficial-sigs/os.conf
+  register: copyconfigs
+
+- name: Template user config
+  template:
+    src: user.conf.j2
+    dest: /etc/clamav-unofficial-sigs/user.conf
+    owner: root
+    group: root
+    mode: 0640
+  register: userconfig
+
+- name: Force download of all sources
+  command: /usr/local/sbin/clamav-unofficial-sigs.sh -F
+  when: copyscript.changed or copyconfigs.changed or userconfig.changed
+
+- name: Install man page
+  command: /usr/local/sbin/clamav-unofficial-sigs.sh --install-man
+  when: copyscript.changed
+
+- name: Install systemd service file (clamav-unofficial-sigs.service)
+  template:
+    src: clamav-unofficial-sigs.service.j2
+    dest: /etc/systemd/system/clamav-unofficial-sigs.service
+    group: root
+    owner: root
+    mode: 0644
+  register: sigservice
+
+- name: Install systemd timer file (clamav-unofficial-sigs.timer)
+  template:
+    src: clamav-unofficial-sigs.timer.j2
+    dest: /etc/systemd/system/clamav-unofficial-sigs.timer
+    group: root
+    owner: root
+    mode: 0644
+  register: sigtimer
+
+- name: Enable systemd timer
+  systemd:
+    name: clamav-unofficial-sigs.timer
+    enabled: True
+    state: started
+    daemon_reload: "{{ sigservice.changed or sigtimer.changed }}"
+
