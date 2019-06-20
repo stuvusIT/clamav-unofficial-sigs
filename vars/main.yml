@@ -1,0 +1,2 @@
+---
+clamav_unofficial_sigs_clone_dir: "{{ global_cache_dir | mandatory }}/clamav-unofficial-sigs"

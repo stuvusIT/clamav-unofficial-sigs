@@ -1,0 +1,43 @@
+---
+galaxy_info:
+  author: Michel Weitbrecht (michel.weitbrecht@stuvus.uni-stuttgart.de)
+  description: Install and configure clamav-unofficial-sigs service
+  company: stuvus (https://stuvus.uni-stuttgart.de)
+
+  license: CC-BY-SA
+
+  min_ansible_version: 2.5
+
+  platforms:
+    - name: Debian
+      versions:
+        - jessie
+        - stretch
+    - name: Ubuntu
+      versions:
+        - xenial
+        - bionic
+    - name: ArchLinux
+      versions:
+        - any
+    - name: CentOS
+      versions:
+        - 6
+        - 7
+    - name: Gentoo
+      versions:
+        - any
+    - name: Raspbian
+      versions:
+        - jessie
+        - stretch
+    - name: OpenSuse
+      versions:
+        - any
+
+  galaxy_tags:
+    - antivirus
+    - clam
+    - clamav
+
+dependencies: []
