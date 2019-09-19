@@ -51,7 +51,7 @@
   loop:
     - src: master.conf
       dest: /etc/clamav-unofficial-sigs/master.conf
-    - src: "os.{{ clamav_unofficial_sigs_os }}.conf"
+    - src: "os/os.{{ clamav_unofficial_sigs_os }}.conf"
       dest: /etc/clamav-unofficial-sigs/os.conf
   register: copyconfigs
 
