@@ -79,6 +79,7 @@
     group: root
     owner: root
     mode: 0644
+    validate: systemd-analyze verify %s
   register: sigservice
 
 - name: Install systemd timer file (clamav-unofficial-sigs.timer)
@@ -88,6 +89,7 @@
     group: root
     owner: root
     mode: 0644
+    validate: systemd-analyze verify %s
   register: sigtimer
 
 - name: Enable systemd timer
