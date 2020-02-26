@@ -2,4 +2,4 @@
 clamav_unofficial_sigs_frequency: "hourly"
 clamav_unofficial_sigs_config: {}
 clamav_unofficial_sigs_additional_dbs: []
-clamav_unofficial_sigs_os: debian9
+clamav_unofficial_sigs_os: debian
