@@ -11,8 +11,9 @@
 
 - name: Clone clamav-unofficial-sigs locally
   git:
-    repo: https://github.com/extremeshok/clamav-unofficial-sigs.git
+    repo: "{{ clamav_unofficial_sigs_repo }}"
     dest: "{{ clamav_unofficial_sigs_clone_dir }}"
+    version: "{{ clamav_unofficial_sigs_version }}"
     force: True
   changed_when: False
   become: no
