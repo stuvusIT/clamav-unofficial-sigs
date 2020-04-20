@@ -23,13 +23,15 @@ Note that dependencies are only installed on `apt`-like systems.
 
 ## Role Variables
 
-| Name                                    | Required/Default   | Description                                                                                                                                        |
-|-----------------------------------------|:------------------:|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| `global_cache_dir`                      | :heavy_check_mark: | A directory on the Ansible Controller where the repo will be cloned to for caching purposes.                                                       |
-| `clamav_unofficial_sigs_frequency`      | `hourly`           | Frequency of updates. See [systemd.time](https://www.freedesktop.org/software/systemd/man/systemd.time.html#Calendar%20Events) for allowed values. |
-| `clamav_unofficial_sigs_config`         | :heavy_check_mark: | Dict keys and string values. You should include `user_configuration_complete`=`yes` for the script to work.                                        |
-| `clamav_unofficial_sigs_additional_dbs` | `[]`               | List of additional database sources, e.g. `ftp`, `http`, `rsync` addresses.                                                                        |
-| `clamav_unofficial_sigs_os`             | `debian`           | Set which [OS setting file](https://github.com/extremeshok/clamav-unofficial-sigs/tree/master/config) should be used.                              |
+| Name                                    | Required/Default                                            | Description                                                                                                                                        |
+|-----------------------------------------|:-----------------------------------------------------------:|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `global_cache_dir`                      | :heavy_check_mark:                                          | A directory on the Ansible Controller where the repo will be cloned to for caching purposes.                                                       |
+| `clamav_unofficial_sigs_frequency`      | `hourly`                                                    | Frequency of updates. See [systemd.time](https://www.freedesktop.org/software/systemd/man/systemd.time.html#Calendar%20Events) for allowed values. |
+| `clamav_unofficial_sigs_config`         | :heavy_check_mark:                                          | Dict keys and string values. You should include `user_configuration_complete`=`yes` for the script to work.                                        |
+| `clamav_unofficial_sigs_additional_dbs` | `[]`                                                        | List of additional database sources, e.g. `ftp`, `http`, `rsync` addresses.                                                                        |
+| `clamav_unofficial_sigs_os`             | `debian`                                                    | Set which [OS setting file](https://github.com/extremeshok/clamav-unofficial-sigs/tree/master/config) should be used.                              |
+| `clamav_unofficial_sigs_repo`           | `https://github.com/extremeshok/clamav-unofficial-sigs.git` | git URL to clone                                                                                                                                   |
+| `clamav_unofficial_sigs_version`        | `master`                                                    | git version to clone                                                                                                                               |
 
 
 ## Example
@@ -42,6 +44,7 @@ clamav_unofficial_sigs_config:
   clamd_socket: /run/clamav/clamd.sock
   downloader_ignore_ssl: "no"
   user_configuration_complete: "yes"
+  yararulesproject_enabled: "yes"
 ```
 
 
